@@ -8,7 +8,7 @@ The game is built using HTML, CSS, and Python(Django), featuring a clean design 
 
 This software aims to offer an enjoyable gameplay experience and help me further develop my web development skills while applying best practices in Django and web design.
 
-**Software Demo Video:** ()
+**Software Demo Video:** (https://youtu.be/zJK-1fNIHbE)
 
 ## Web Pages
 
