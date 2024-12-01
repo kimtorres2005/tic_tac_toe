@@ -1,0 +1,200 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Play Tic Tac Toe</title>
+        <style>
+            body {
+                font-family: "Roboto", sans-serif;
+                text-align: center;
+                background: linear-gradient(to right, #485563, #29323c);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #d1e8e2;
+            }
+
+            h1 {
+                color: #ffb400; /* Bright amber for main heading */
+                margin-bottom: 20px;
+                font-size: 36px;
+            }
+
+            p {
+                color: #a6c0fe; /* Light blue for descriptions */
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+
+            h2 {
+                color: #84fab0; /* Gradient-inspired green */
+                margin-top: 40px;
+                font-size: 30px;
+            }
+
+            .board {
+                display: grid;
+                grid-template-columns: repeat(3, 100px);
+                gap: 5px;
+            }
+
+            .cell {
+                width: 100px;
+                height: 100px;
+                background: #374045;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 26px;
+                cursor: pointer;
+                border-radius: 10px;
+                transition: transform 0.2s, background-color 0.3s;
+            }
+
+            .cell.x {
+                background: linear-gradient(
+                    45deg,
+                    #6a11cb,
+                    #2575fc
+                ); /* Purple-blue gradient */
+                color: #ffffff;
+                font-size: 40px;
+            }
+
+            .cell.o {
+                background: linear-gradient(
+                    45deg,
+                    #ff758c,
+                    #ff7eb3
+                ); /* Pink gradient */
+                color: #ffffff;
+                font-size: 40px;
+            }
+
+            .cell:hover {
+                transform: scale(1.1);
+                background: #586776; /* Darker shade on hover */
+            }
+
+            .winner,
+            .draw {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 20px;
+            }
+
+            .winner {
+                color: #6ae368; /* Bright green */
+            }
+
+            .draw {
+                color: #ffa751; /* Warm orange */
+            }
+
+            .button_reset {
+                margin: 30px;
+                padding: 12px 25px;
+                font-size: 16px;
+                color: #030303;
+                cursor: pointer;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                border: none;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .button_reset:hover {
+                background: linear-gradient(135deg, #fad0c4, #ff9a9e);
+                transform: scale(1.05);
+            }
+
+            .buttons {
+                margin: 30px;
+                padding: 12px 25px;
+                font-size: 16px;
+                color: #ffffff;
+                cursor: pointer;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                border: none;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .buttons:hover {
+                background: linear-gradient(135deg, #764ba2, #667eea);
+                transform: scale(1.05);
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- Main heading for the game -->
+        <h1>Tic Tac Toe</h1>
+
+        <!-- Display the current player's name and symbol -->
+        <h2>
+            Current Player: {{ current_player_name }} - {{ current_player }}
+        </h2>
+
+        <!-- Display the winner or if the game is a draw -->
+        {% if winner %}
+        <h2 class="winner">{{ winner }} wins!</h2>
+        {% elif is_draw %}
+        <h2 class="draw">The game is a draw!</h2>
+        {% endif %}
+
+        <!-- Form for handling the game moves -->
+        <form method="post" action="{% url 'play_game' %}">
+            {% csrf_token %}
+            <div class="board">
+                <!-- Loop through the board indices to create the game cells -->
+                {% for i in indices %}
+                <button
+                    type="submit"
+                    name="index"
+                    value="{{ i }}"
+                    class="cell {% if board|get_item:i == 'X' %}x{% elif board|get_item:i == 'O' %}o{% endif %}"
+                    {%
+                    if
+                    board|get_item:i
+                    !=" "
+                    or
+                    winner
+                    or
+                    is_draw
+                    %}disabled{%
+                    endif
+                    %}
+                >
+                    {{ board|get_item:i }}
+                </button>
+                {% endfor %}
+            </div>
+        </form>
+
+        <!-- Form for resetting the game -->
+        <form method="post" action="{% url 'play_game' %}">
+            {% csrf_token %}
+            <button
+                class="button_reset"
+                type="submit"
+                name="reset"
+                value="true"
+            >
+                Reset Game
+            </button>
+        </form>
+
+        <!-- Navigation buttons for leaderboard and new players -->
+        <div class="page_buttons">
+            <a href="{% url 'home' %}" class="buttons">Leaderboard</a>
+            <a href="{% url 'game' %}" class="buttons">New Players</a>
+        </div>
+    </body>
+</html>

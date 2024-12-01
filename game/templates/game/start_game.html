@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tic Tac Toe - Start Game</title>
+        <style>
+            body {
+                font-family: "Roboto", sans-serif;
+                text-align: center;
+                background: linear-gradient(180deg, #232526, #414345);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #e8e8e8;
+            }
+
+            h1 {
+                color: #f64f59; /* Fiery pink for title */
+                margin-bottom: 20px;
+                font-size: 36px;
+            }
+
+            p {
+                color: #c4c4c4; /* Neutral gray for text */
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+
+            h2 {
+                color: #ffde7d; /* Soft gold for subheadings */
+                margin-top: 40px;
+                font-size: 30px;
+            }
+
+            form {
+                background: linear-gradient(
+                    135deg,
+                    #1e3c72,
+                    #2a5298
+                ); /* Blue gradient */
+                border: 3px solid #feb47b;
+                border-radius: 25px;
+                padding: 40px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+                max-width: 400px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            label {
+                font-weight: bold;
+                color: #e3e3e3;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #828282;
+                border-radius: 8px;
+                font-size: 16px;
+                background: #2c2c2c;
+                color: #e8e8e8;
+                box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            input[type="text"]:focus {
+                border-color: #26a69a;
+                box-shadow: 0 0 10px rgba(38, 166, 154, 0.5);
+            }
+
+            .buttons {
+                margin: 20px 15px;
+                padding: 12px 25px;
+                font-size: 16px;
+                color: #ffffff;
+                cursor: pointer;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                border: none;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .buttons:hover {
+                background: linear-gradient(135deg, #764ba2, #667eea);
+                transform: scale(1.05);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Main heading for the page -->
+        <h1>Welcome to Tic Tac Toe!</h1>
+
+        <!-- Brief instruction for the users -->
+        <p>Enter the names of the players to start the game.</p>
+
+        <!-- Form to collect player names, posts data to the 'game' URL -->
+        <form method="post" action="{% url 'game' %}">
+            {% csrf_token %}
+            <!-- CSRF token for security -->
+
+            <!-- Label and input for Player 1's name -->
+            <label for="player1">Player 1 (X):</label>
+            <input type="text" id="player1" name="player1" required />
+
+            <!-- Label and input for Player 2's name -->
+            <label for="player2">Player 2 (O):</label>
+            <input type="text" id="player2" name="player2" required />
+
+            <!-- Button to submit the form and start the game -->
+            <button class="buttons" type="submit">Start Game</button>
+        </form>
+
+        <!-- Navigation buttons for other pages -->
+        <div class="page_buttons">
+            <!-- Link to the leaderboard page -->
+            <a href="{% url 'home' %}" class="buttons">Leaderboard</a>
+
+            <!-- Link to the game board page -->
+            <a href="{% url 'play_game' %}" class="buttons">Game Board</a>
+        </div>
+    </body>
+</html>
